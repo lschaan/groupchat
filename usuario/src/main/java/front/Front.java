@@ -66,8 +66,9 @@ public class Front {
     prePanel.add(usernameChooser, preRight);
     preFrame.add(BorderLayout.CENTER, prePanel);
     preFrame.add(BorderLayout.SOUTH, enterServer);
-    preFrame.setSize(300, 300);
+    preFrame.setSize(400, 400);
     preFrame.setVisible(true);
+    preFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   public static void display() {
