@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +18,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import usuario.ThreadUserEscrita;
 
 public class Front {
 
@@ -81,6 +85,16 @@ public class Front {
 
     messageBox = new JTextField(30);
     messageBox.requestFocusInWindow();
+    messageBox.addKeyListener(
+        new KeyListener() {
+          public void keyTyped(KeyEvent e) {}
+
+          public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) sendMessage();
+          }
+
+          public void keyReleased(KeyEvent e) {}
+        });
 
     sendMessage = new JButton("Enviar Mensagem");
     sendMessage.addActionListener(new SendMessageListener());
@@ -114,5 +128,17 @@ public class Front {
     newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     newFrame.setSize(470, 300);
     newFrame.setVisible(true);
+  }
+
+  public static void sendMessage() {
+    if (Front.messageBox.getText().length() < 1) {
+    } else if (Front.messageBox.getText().equals(".clear")) {
+      Front.chatBox.setText("Cleared all messages\n");
+      Front.messageBox.setText("");
+    } else {
+      ThreadUserEscrita.lerInput(Front.messageBox.getText());
+      Front.messageBox.setText("");
+    }
+    Front.messageBox.requestFocusInWindow();
   }
 }

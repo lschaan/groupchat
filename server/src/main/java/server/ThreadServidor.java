@@ -10,7 +10,7 @@ import java.util.List;
 public class ThreadServidor extends Thread {
   private static List<Usuario> listaUsuarios;
   private ServerSocket socketRecepcao;
-  private int id;
+  private static int id;
 
   public ThreadServidor(ServerSocket socketRecepcao) {
     this.socketRecepcao = socketRecepcao;
@@ -31,42 +31,32 @@ public class ThreadServidor extends Thread {
     }
   }
 
-  public static void enviarMensagem(String mensagem, int id, String nome) {
-    DataOutputStream paraUsuario;
-    for (int i = 0; i < listaUsuarios.size(); i++) {
-      try {
-        System.out.println(
-            "Tentando enviar mensagem " + mensagem + " para " + listaUsuarios.get(i));
-        paraUsuario = new DataOutputStream(listaUsuarios.get(i).getSocket().getOutputStream());
-        paraUsuario.writeBytes(nome + ": " + mensagem + "\n");
-      } catch (Exception e) {
-        System.out.println(listaUsuarios.get(i) + " - Problema na conexão.");
-        listaUsuarios.remove(i);
-        i--;
-      }
-    }
-  }
-
-  public static void enviarMensagem(String mensagem, int id) {
-    DataOutputStream paraUsuario;
-    for (int i = 0; i < listaUsuarios.size(); i++) {
-      try {
-        paraUsuario = new DataOutputStream(listaUsuarios.get(i).getSocket().getOutputStream());
-        paraUsuario.writeBytes(mensagem + "\n");
-      } catch (Exception e) {
-        System.out.println(listaUsuarios.get(i) + " - Problema na conexão.");
-        listaUsuarios.remove(i);
-        i--;
-      }
-    }
+  public static void enviarMensagem(String mensagem, Usuario remetente) {
+    listaUsuarios
+        .stream()
+        .forEach(
+            destinatario -> {
+              if (destinatario.isAvaliable()) {
+                escreverMensagem(mensagem, destinatario);
+              }
+            });
   }
 
   public static void removerUsuario(int id) {
-    for (int i = 0; i < listaUsuarios.size(); i++) {
-      if (listaUsuarios.get(i).getIdUsuario() == id) {
-        listaUsuarios.remove(i);
-        break;
-      }
+    listaUsuarios
+        .stream()
+        .filter(usuario -> usuario.getIdUsuario() == id)
+        .findFirst()
+        .ifPresent(listaUsuarios::remove);
+  }
+
+  private static void escreverMensagem(String mensagem, Usuario usuario) {
+    try {
+      System.out.println("Enviando \"" + mensagem + "\" para usuário " + usuario);
+      new DataOutputStream(usuario.getSocket().getOutputStream()).writeBytes(mensagem + '\n');
+    } catch (Exception e) {
+      System.out.println(usuario + " - ERROR: Problema no recebimento da mensagem.");
+      removerUsuario(usuario.getIdUsuario());
     }
   }
 }
