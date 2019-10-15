@@ -29,10 +29,11 @@ public class ThreadUserEscrita extends Thread {
     try {
       Mensagem mensagemJson = new Mensagem(mensagem, TipoMensagem.MENSAGEM);
 
-      if (mensagem.startsWith(">name.")) {
-        mensagemJson.setMensagem(mensagem.substring(">name.".length()));
+      if (mensagem.startsWith("/name")) {
+        mensagemJson.setMensagem(mensagem.substring("/name ".length()));
         mensagemJson.setTipo(TipoMensagem.NAME_SET);
       }
+
       paraServidor.writeBytes(objectMapper.writeValueAsString(mensagemJson) + '\n');
     } catch (IOException ioe) {
       System.out.println("Erro no envio da mensagem.");
