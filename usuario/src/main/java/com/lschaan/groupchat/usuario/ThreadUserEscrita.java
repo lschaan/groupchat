@@ -29,13 +29,14 @@ public class ThreadUserEscrita extends Thread {
     try {
       Mensagem mensagemJson = new Mensagem(mensagem, TipoMensagem.MENSAGEM);
 
-      if (mensagem.startsWith("/" + TipoMensagem.HELP.toString().toLowerCase())) {
-        mensagemJson.setMensagem(mensagem.substring(("/" + TipoMensagem.HELP).length()));
+      if (mensagem.startsWith(TipoMensagem.HELP.getComando())) {
+        mensagemJson.setMensagem(mensagem.substring((TipoMensagem.HELP.getComando()).length()));
         mensagemJson.setTipo(TipoMensagem.HELP);
       }
 
-      if (mensagem.startsWith("/" + TipoMensagem.NAME.toString().toLowerCase())) {
-        mensagemJson.setMensagem(mensagem.substring(("/" + TipoMensagem.NAME + " ").length()));
+      if (mensagem.startsWith(TipoMensagem.NAME.getComando())) {
+        mensagemJson.setMensagem(
+            mensagem.substring((TipoMensagem.NAME.getComando() + " ").length()));
         mensagemJson.setTipo(TipoMensagem.NAME);
       }
 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lschaan.groupchat.server.mensagem.Mensagem;
@@ -75,11 +74,11 @@ public class ThreadUsuario extends Thread {
         System.out.println("Nome de " + this + " definido.");
         break;
       case HELP:
-        String mensagemAjuda =
-            Arrays.asList(TipoMensagem.values())
-                .stream()
-                .map(TipoMensagem::toString)
-                .collect(Collectors.joining(", "));
+        String mensagemAjuda = "Comandos: \n";
+        for (TipoMensagem tipoMensagem : Arrays.asList(TipoMensagem.values())) {
+          mensagemAjuda +=
+              (tipoMensagem.getComando() != null ? tipoMensagem.getComando() + "\n" : "");
+        }
         ThreadServidor.enviarMensagem(mensagemAjuda, this);
         break;
       default:
