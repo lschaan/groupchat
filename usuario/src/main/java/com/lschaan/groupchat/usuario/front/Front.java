@@ -1,4 +1,4 @@
-package front;
+package com.lschaan.groupchat.usuario.front;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import usuario.ThreadUserEscrita;
+import com.lschaan.groupchat.usuario.ThreadUserEscrita;
 
 public class Front {
 

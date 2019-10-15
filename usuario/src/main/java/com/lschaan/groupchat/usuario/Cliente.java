@@ -1,9 +1,9 @@
-package usuario;
+package com.lschaan.groupchat.usuario;
 
 import java.net.ConnectException;
 import java.net.Socket;
 
-import front.Front;
+import com.lschaan.groupchat.usuario.front.Front;
 
 public class Cliente {
   private static String HOST = "127.0.0.1";

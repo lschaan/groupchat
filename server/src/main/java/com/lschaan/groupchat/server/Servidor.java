@@ -1,4 +1,4 @@
-package server;
+package com.lschaan.groupchat.server;
 
 import java.net.BindException;
 import java.net.ServerSocket;
