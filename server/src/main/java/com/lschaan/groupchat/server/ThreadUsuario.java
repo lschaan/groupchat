@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lschaan.groupchat.server.mensagem.Mensagem;
@@ -28,13 +30,13 @@ public class ThreadUsuario extends Thread {
     try {
       System.out.println(this + " - Conexão estabelecida.");
       Mensagem mensagemNome = objectMapper.readValue(doUsuario.readLine(), Mensagem.class);
-      mensagemNome.setTipo(TipoMensagem.NAME_SET);
+      mensagemNome.setTipo(TipoMensagem.NAME);
       mensagemNome.setRemetente(usuario);
       processarMensagem(mensagemNome);
 
       if (usuario.getNome() == null) throw new Exception();
 
-      processarMensagem(new Mensagem(usuario, "entrou.", TipoMensagem.AÇÃO));
+      processarMensagem(new Mensagem(usuario, "entrou.", TipoMensagem.ACAO));
 
       while (true) {
         Mensagem mensagem = objectMapper.readValue(doUsuario.readLine(), Mensagem.class);
@@ -51,7 +53,7 @@ public class ThreadUsuario extends Thread {
       ThreadServidor.removerUsuario(usuario.getId());
     }
     if (usuario.getNome() != null)
-      processarMensagem(new Mensagem(usuario, "saiu.", TipoMensagem.AÇÃO));
+      processarMensagem(new Mensagem(usuario, "saiu.", TipoMensagem.ACAO));
   }
 
   public void processarMensagem(Mensagem mensagem) {
@@ -60,17 +62,25 @@ public class ThreadUsuario extends Thread {
         ThreadServidor.enviarMensagem(
             mensagem.getRemetente().getNome() + ": " + mensagem.getMensagem());
         break;
-      case AÇÃO:
-        ThreadServidor.enviarMensagem("*" +
-            mensagem.getRemetente().getNome() + " " + mensagem.getMensagem());
+      case ACAO:
+        ThreadServidor.enviarMensagem(
+            "*" + mensagem.getRemetente().getNome() + " " + mensagem.getMensagem());
         break;
-      case NAME_SET:
+      case NAME:
         if (usuario.getNome() != null) {
           processarMensagem(
-              new Mensagem(usuario, "renomeado para " + mensagem.getMensagem(), TipoMensagem.AÇÃO));
+              new Mensagem(usuario, "renomeado para " + mensagem.getMensagem(), TipoMensagem.ACAO));
         }
         usuario.setNome(mensagem.getMensagem());
         System.out.println("Nome de " + this + " definido.");
+        break;
+      case HELP:
+        String mensagemAjuda =
+            Arrays.asList(TipoMensagem.values())
+                .stream()
+                .map(TipoMensagem::toString)
+                .collect(Collectors.joining(", "));
+        ThreadServidor.enviarMensagem(mensagemAjuda, this);
         break;
       default:
         break;

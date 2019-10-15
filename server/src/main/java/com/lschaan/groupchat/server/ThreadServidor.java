@@ -50,6 +50,12 @@ public class ThreadServidor extends Thread {
             });
   }
 
+  public static void enviarMensagem(String mensagem, ThreadUsuario destinatario) {
+    if (destinatario.isAvaliable()) {
+      escreverMensagem(mensagem, destinatario);
+    }
+  }
+
   private static void escreverMensagem(String mensagem, ThreadUsuario usuario) {
     try {
       System.out.println("Enviando \"" + mensagem + "\" para usuário " + usuario);

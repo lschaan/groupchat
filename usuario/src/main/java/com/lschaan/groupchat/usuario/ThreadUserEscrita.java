@@ -29,9 +29,14 @@ public class ThreadUserEscrita extends Thread {
     try {
       Mensagem mensagemJson = new Mensagem(mensagem, TipoMensagem.MENSAGEM);
 
-      if (mensagem.startsWith("/name")) {
-        mensagemJson.setMensagem(mensagem.substring("/name ".length()));
-        mensagemJson.setTipo(TipoMensagem.NAME_SET);
+      if (mensagem.startsWith("/" + TipoMensagem.HELP.toString().toLowerCase())) {
+        mensagemJson.setMensagem(mensagem.substring(("/" + TipoMensagem.HELP).length()));
+        mensagemJson.setTipo(TipoMensagem.HELP);
+      }
+
+      if (mensagem.startsWith("/" + TipoMensagem.NAME.toString().toLowerCase())) {
+        mensagemJson.setMensagem(mensagem.substring(("/" + TipoMensagem.NAME + " ").length()));
+        mensagemJson.setTipo(TipoMensagem.NAME);
       }
 
       paraServidor.writeBytes(objectMapper.writeValueAsString(mensagemJson) + '\n');

@@ -1,7 +1,8 @@
 package com.lschaan.groupchat.usuario.mensagem;
 
 public enum TipoMensagem {
-  NAME_SET,
+  NAME,
+  HELP,
   MENSAGEM,
-  AÇÃO;
+  ACAO;
 }
