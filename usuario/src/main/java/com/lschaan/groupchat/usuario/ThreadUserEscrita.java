@@ -29,15 +29,11 @@ public class ThreadUserEscrita extends Thread {
     try {
       Mensagem mensagemJson = new Mensagem(mensagem, TipoMensagem.MENSAGEM);
 
-      if (mensagem.startsWith(TipoMensagem.HELP.getComando())) {
-        mensagemJson.setMensagem(mensagem.substring((TipoMensagem.HELP.getComando()).length()));
-        mensagemJson.setTipo(TipoMensagem.HELP);
-      }
-
-      if (mensagem.startsWith(TipoMensagem.NAME.getComando())) {
-        mensagemJson.setMensagem(
-            mensagem.substring((TipoMensagem.NAME.getComando() + " ").length()));
-        mensagemJson.setTipo(TipoMensagem.NAME);
+      if (mensagem.startsWith(TipoMensagem.COMANDO.getComando())) {
+        String[] split = mensagem.split(" ");
+        mensagemJson.setMensagem(split[0]);
+        mensagemJson.setComplemento(split[1]);
+        mensagemJson.setTipo(TipoMensagem.COMANDO);
       }
 
       paraServidor.writeBytes(objectMapper.writeValueAsString(mensagemJson) + '\n');

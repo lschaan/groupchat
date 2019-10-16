@@ -4,6 +4,7 @@ public class Mensagem {
   private Usuario remetente;
   private String mensagem;
   private TipoMensagem tipo;
+  private String complemento;
 
   public Mensagem() {}
 
@@ -38,5 +39,13 @@ public class Mensagem {
 
   public void setTipo(TipoMensagem tipo) {
     this.tipo = tipo;
+  }
+
+  public String getComplemento() {
+    return complemento;
+  }
+
+  public void setComplemento(String complemento) {
+    this.complemento = complemento;
   }
 }

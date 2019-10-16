@@ -1,10 +1,9 @@
 package com.lschaan.groupchat.usuario.mensagem;
 
 public enum TipoMensagem {
-  NAME("/name"),
+  COMANDO("/"),
   MENSAGEM(null),
-  ACAO(null),
-  HELP("/help");
+  ACAO(null);
 
   private String comando;
 

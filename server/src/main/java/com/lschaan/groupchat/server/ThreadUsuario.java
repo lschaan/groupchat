@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lschaan.groupchat.server.mensagem.Mensagem;
+import com.lschaan.groupchat.server.mensagem.TipoComando;
 import com.lschaan.groupchat.server.mensagem.TipoMensagem;
 import com.lschaan.groupchat.server.mensagem.Usuario;
 
@@ -29,7 +30,6 @@ public class ThreadUsuario extends Thread {
     try {
       System.out.println(this + " - Conexão estabelecida.");
       Mensagem mensagemNome = objectMapper.readValue(doUsuario.readLine(), Mensagem.class);
-      mensagemNome.setTipo(TipoMensagem.NAME);
       mensagemNome.setRemetente(usuario);
       processarMensagem(mensagemNome);
 
@@ -65,22 +65,27 @@ public class ThreadUsuario extends Thread {
         ThreadServidor.enviarMensagem(
             "*" + mensagem.getRemetente().getNome() + " " + mensagem.getMensagem());
         break;
-      case NAME:
-        if (usuario.getNome() != null) {
-          processarMensagem(
-              new Mensagem(usuario, "renomeado para " + mensagem.getMensagem(), TipoMensagem.ACAO));
+      case COMANDO:
+        if (mensagem.getMensagem().equals(TipoComando.NAME.getComando())
+            && mensagem.getComplemento() != null) {
+          System.out.println("netrou");
+          if (usuario.getNome() != null) {
+            processarMensagem(
+                new Mensagem(
+                    usuario, "renomeado para " + mensagem.getComplemento(), TipoMensagem.ACAO));
+          }
+          usuario.setNome(mensagem.getComplemento());
+          System.out.println("Nome de " + this + " definido.");
+        } else if (mensagem.getMensagem() == TipoComando.HELP.getComando()) {
+          String mensagemAjuda = "Comandos: \n";
+          for (TipoMensagem tipoMensagem : Arrays.asList(TipoMensagem.values())) {
+            mensagemAjuda +=
+                (tipoMensagem.getComando() != null ? tipoMensagem.getComando() + "\n" : "");
+          }
+          ThreadServidor.enviarMensagem(mensagemAjuda, this);
+        } else {
+          processarMensagem(new Mensagem(usuario, "Comando inexistente.", TipoMensagem.RESPOSTA));
         }
-        usuario.setNome(mensagem.getMensagem());
-        System.out.println("Nome de " + this + " definido.");
-        break;
-      case HELP:
-        String mensagemAjuda = "Comandos: \n";
-        for (TipoMensagem tipoMensagem : Arrays.asList(TipoMensagem.values())) {
-          mensagemAjuda +=
-              (tipoMensagem.getComando() != null ? tipoMensagem.getComando() + "\n" : "");
-        }
-        ThreadServidor.enviarMensagem(mensagemAjuda, this);
-        break;
       default:
         break;
     }

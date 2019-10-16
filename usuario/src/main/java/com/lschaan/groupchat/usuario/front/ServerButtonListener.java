@@ -13,7 +13,7 @@ public class ServerButtonListener implements ActionListener {
     if (username.length() > 0) {
       Front.preFrame.setVisible(false);
       Front.display();
-      ThreadUserEscrita.lerInput(username);
+      ThreadUserEscrita.lerInput("/name " + username);
     }
   }
 }
