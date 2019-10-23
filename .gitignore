@@ -8,3 +8,4 @@ usuario/.classpath
 usuario/bin
 /.gradle/
 server/.idea
+server/out
