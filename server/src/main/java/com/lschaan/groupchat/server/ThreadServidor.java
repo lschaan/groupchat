@@ -1,5 +1,8 @@
 package com.lschaan.groupchat.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThreadServidor extends Thread {
+  private static Logger logger;
   private static List<ThreadUsuario> listaUsuarios;
   private ServerSocket socketRecepcao;
   private static int id;
@@ -15,6 +19,7 @@ public class ThreadServidor extends Thread {
   public ThreadServidor(ServerSocket socketRecepcao) {
     this.socketRecepcao = socketRecepcao;
     listaUsuarios = new ArrayList<ThreadUsuario>();
+    ThreadServidor.logger = LoggerFactory.getLogger(ThreadServidor.class)
   }
 
   public void run() {
@@ -58,10 +63,10 @@ public class ThreadServidor extends Thread {
 
   private static void escreverMensagem(String mensagem, ThreadUsuario usuario) {
     try {
-      System.out.println("Enviando \"" + mensagem + "\" para usuário " + usuario);
+     logger.info("Enviando \"" + mensagem + "\" para usuário " + usuario);
       new DataOutputStream(usuario.getSocket().getOutputStream()).writeBytes(mensagem + '\n');
     } catch (Exception e) {
-      System.out.println(usuario + " - ERROR: Problema no recebimento da mensagem.");
+      logger.error(usuario + " - Problema no recebimento da mensagem.");
       removerUsuario(usuario.getIdUsuario());
     }
   }

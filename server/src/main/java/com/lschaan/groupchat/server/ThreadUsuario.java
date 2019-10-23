@@ -11,6 +11,8 @@ import com.lschaan.groupchat.server.mensagem.Mensagem;
 import com.lschaan.groupchat.server.mensagem.TipoComando;
 import com.lschaan.groupchat.server.mensagem.TipoMensagem;
 import com.lschaan.groupchat.server.mensagem.Usuario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ThreadUsuario extends Thread {
 
@@ -18,17 +20,19 @@ public class ThreadUsuario extends Thread {
   private Socket socketCliente;
   private BufferedReader doUsuario;
   private ObjectMapper objectMapper;
+  private Logger logger;
 
   public ThreadUsuario(Socket socketCliente, int id) throws IOException {
     this.socketCliente = socketCliente;
     this.doUsuario = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
     this.objectMapper = new ObjectMapper();
-    usuario = new Usuario(id);
+    this.usuario = new Usuario(id);
+    this.logger = LoggerFactory.getLogger(ThreadUsuario.class);
   }
 
   public void run() {
     try {
-      System.out.println(this + " - Conexão estabelecida.");
+      logger.info(this + " - Conexão estabelecida.");
       Mensagem mensagemNome = objectMapper.readValue(doUsuario.readLine(), Mensagem.class);
       mensagemNome.setRemetente(usuario);
       processarMensagem(mensagemNome);
@@ -42,13 +46,13 @@ public class ThreadUsuario extends Thread {
         mensagem.setRemetente(usuario);
 
         if (mensagem.getMensagem() == null) {
-          System.out.println(this + " - O usuário não foi encontrado.");
+          logger.warn(this + " - O usuário não foi encontrado.");
           throw new Exception();
         }
         processarMensagem(mensagem);
       }
     } catch (Exception e) {
-      System.out.println(this + " - ERROR: Conexão perdida com usuário.");
+      logger.error(this + " - Conexão perdida com usuário.");
       ThreadServidor.removerUsuario(usuario.getId());
     }
     if (usuario.getNome() != null)
@@ -68,14 +72,13 @@ public class ThreadUsuario extends Thread {
       case COMANDO:
         if (mensagem.getMensagem().equals(TipoComando.NAME.getComando())
             && mensagem.getComplemento() != null) {
-          System.out.println("netrou");
           if (usuario.getNome() != null) {
             processarMensagem(
                 new Mensagem(
                     usuario, "renomeado para " + mensagem.getComplemento(), TipoMensagem.ACAO));
           }
           usuario.setNome(mensagem.getComplemento());
-          System.out.println("Nome de " + this + " definido.");
+          logger.info("Nome de " + this + " definido.");
         } else if (mensagem.getMensagem() == TipoComando.HELP.getComando()) {
           String mensagemAjuda = "Comandos: \n";
           for (TipoMensagem tipoMensagem : Arrays.asList(TipoMensagem.values())) {
