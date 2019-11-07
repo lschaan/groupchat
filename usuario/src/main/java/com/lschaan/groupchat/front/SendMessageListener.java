@@ -5,6 +5,6 @@ import java.awt.event.ActionListener;
 
 public class SendMessageListener implements ActionListener {
   public void actionPerformed(ActionEvent event) {
-    Front.sendMessage();
+    Front.sendMessage(Front.messageBox.getText());
   }
 }

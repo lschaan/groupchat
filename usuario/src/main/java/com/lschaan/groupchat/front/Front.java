@@ -24,9 +24,9 @@ public class Front {
   public static JTextField usernameChooser;
   public static JFrame preFrame;
   public static JTextArea chatBox;
+  public static JTextField messageBox;
   private static String appName = "Chat";
   private static JFrame newFrame = new JFrame(appName);
-  private static JTextField messageBox;
 
   public static void start() {
     SwingUtilities.invokeLater(
@@ -56,7 +56,7 @@ public class Front {
           public void keyTyped(KeyEvent e) {}
 
           public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) sendMessage();
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) sendMessage(messageBox.getText());
           }
 
           public void keyReleased(KeyEvent e) {}
@@ -96,9 +96,9 @@ public class Front {
     newFrame.setVisible(true);
   }
 
-  public static void sendMessage() {
-    if (Front.messageBox.getText().length() >= 1) {
-      ThreadUserEscrita.lerInput(Front.messageBox.getText());
+  public static void sendMessage(String mensagem) {
+    if (mensagem.length() > 0) {
+      ThreadUserEscrita.lerInput(mensagem);
       Front.messageBox.setText("");
     }
     Front.messageBox.requestFocusInWindow();
