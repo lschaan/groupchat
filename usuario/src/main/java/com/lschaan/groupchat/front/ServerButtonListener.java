@@ -1,9 +1,9 @@
-package front;
+package com.lschaan.groupchat.front;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import usuario.ThreadUserEscrita;
+import com.lschaan.groupchat.usuario.ThreadUserEscrita;
 
 public class ServerButtonListener implements ActionListener {
   String username;

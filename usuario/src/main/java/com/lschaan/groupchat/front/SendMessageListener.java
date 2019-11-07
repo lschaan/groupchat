@@ -1,4 +1,4 @@
-package front;
+package com.lschaan.groupchat.front;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,6 +1,6 @@
-package usuario;
+package com.lschaan.groupchat.usuario;
 
-import front.Front;
+import com.lschaan.groupchat.front.Front;
 
 import java.net.ConnectException;
 import java.net.Socket;

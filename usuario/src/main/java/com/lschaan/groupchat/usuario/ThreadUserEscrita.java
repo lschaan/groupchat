@@ -1,4 +1,4 @@
-package usuario;
+package com.lschaan.groupchat.usuario;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
