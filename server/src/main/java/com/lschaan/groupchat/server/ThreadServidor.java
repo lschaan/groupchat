@@ -1,4 +1,4 @@
-package server;
+package com.lschaan.groupchat.server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

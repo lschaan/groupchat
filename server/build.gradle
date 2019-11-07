@@ -6,7 +6,7 @@ plugins {
 }
 
 run {
- mainClassName = "server.Servidor"
+ mainClassName = "com.lschaan.groupchat.server.Servidor"
 }
 
 repositories {
@@ -19,6 +19,6 @@ dependencies {
 
 jar {
 	manifest {
-		attributes 'Main-Class': 'server.Servidor'
+		attributes 'Main-Class': 'com.lschaan.groupchat.server.Servidor'
 	}	
 }
