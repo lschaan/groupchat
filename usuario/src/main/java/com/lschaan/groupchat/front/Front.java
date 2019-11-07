@@ -98,13 +98,8 @@ public class Front {
 
   public static void sendMessage() {
     if (Front.messageBox.getText().length() >= 1) {
-      if (Front.messageBox.getText().equals(".clear")) {
-        Front.chatBox.setText("Cleared all messages\n");
-        Front.messageBox.setText("");
-      } else {
-        ThreadUserEscrita.lerInput(Front.messageBox.getText());
-        Front.messageBox.setText("");
-      }
+      ThreadUserEscrita.lerInput(Front.messageBox.getText());
+      Front.messageBox.setText("");
     }
     Front.messageBox.requestFocusInWindow();
   }
