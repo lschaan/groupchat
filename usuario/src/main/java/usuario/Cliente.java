@@ -1,9 +1,9 @@
 package usuario;
 
+import front.Front;
+
 import java.net.ConnectException;
 import java.net.Socket;
-
-import front.Front;
 
 public class Cliente {
   private static String HOST = "127.0.0.1";
@@ -14,13 +14,13 @@ public class Cliente {
     if (argv.length > 0) HOST = argv[0];
     if (argv.length > 1) PORT = Integer.parseInt(argv[1]);
 
-    Socket socketCliente = realizarConexao();
+    realizarConexao();
     Front.start();
     new Thread(new ThreadUserLeitura(socketCliente)).start();
     new Thread(new ThreadUserEscrita(socketCliente)).start();
   }
 
-  private static Socket realizarConexao() throws Exception {
+  private static void realizarConexao() throws Exception {
     while (true) {
       try {
         socketCliente = new Socket(HOST, PORT);
@@ -30,6 +30,5 @@ public class Cliente {
         Thread.sleep(5000);
       }
     }
-    return socketCliente;
   }
 }

@@ -26,7 +26,7 @@ public class Usuario extends Thread {
       if (nome == null) throw new Exception();
 
       System.out.println(this + " - Nome \"" + nome + "\" definido.");
-      ThreadServidor.enviarMensagem(nome + " entrou.", this);
+      ThreadServidor.enviarMensagem(nome + " entrou.");
 
       while (true) {
         String mensagem = doUsuario.readLine();
@@ -34,13 +34,13 @@ public class Usuario extends Thread {
           System.out.println(this + " - O usuário não foi encontrado.");
           throw new Exception();
         }
-        ThreadServidor.enviarMensagem(nome + ": " + mensagem, this);
+        ThreadServidor.enviarMensagem(nome + ": " + mensagem);
       }
     } catch (Exception e) {
       System.out.println(this + " - ERROR: Conexão perdida com usuário.");
       ThreadServidor.removerUsuario(id);
     }
-    if (nome != null) ThreadServidor.enviarMensagem(nome + " saiu.", this);
+    if (nome != null) ThreadServidor.enviarMensagem(nome + " saiu.");
   }
 
   public int getIdUsuario() {
@@ -51,12 +51,8 @@ public class Usuario extends Thread {
     return socketCliente;
   }
 
-  public String getNome() {
-    return nome;
-  }
-
   public boolean isAvaliable() {
-    return (socketCliente == null ? false : (socketCliente.isClosed() ? false : true));
+    return (socketCliente != null && (!socketCliente.isClosed()));
   }
 
   public String toString() {

@@ -26,7 +26,7 @@ public class ThreadUserEscrita extends Thread {
       } else {
         paraServidor.writeBytes(mensagem + '\n');
       }
-    } catch (IOException ioe) {
+    } catch (IOException ignored) {
     }
   }
 }

@@ -23,31 +23,27 @@ import usuario.ThreadUserEscrita;
 
 public class Front {
 
-  private static String appName = "Chat";
-  public static JButton sendMessage;
   public static JTextField usernameChooser;
-  public static JFrame preFrame;
-  public static JFrame newFrame = new JFrame(appName);
-  public static JTextField messageBox;
+  public  static JFrame preFrame;
   public static JTextArea chatBox;
+  private static String appName = "Chat";
+  private static JFrame newFrame = new JFrame(appName);
+  private static JTextField messageBox;
 
   public static void start() {
     SwingUtilities.invokeLater(
-        new Runnable() {
-          @Override
-          public void run() {
-            try {
-              UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-            Front front = new Front();
-            front.preDisplay();
-          }
-        });
+            () -> {
+              try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
+              Front front = new Front();
+              front.preDisplay();
+            });
   }
 
-  public void preDisplay() {
+  private void preDisplay() {
     newFrame.setVisible(false);
     preFrame = new JFrame(appName);
     usernameChooser = new JTextField(15);
@@ -96,7 +92,7 @@ public class Front {
           public void keyReleased(KeyEvent e) {}
         });
 
-    sendMessage = new JButton("Enviar Mensagem");
+    JButton sendMessage = new JButton("Enviar Mensagem");
     sendMessage.addActionListener(new SendMessageListener());
 
     chatBox = new JTextArea();
@@ -131,13 +127,14 @@ public class Front {
   }
 
   public static void sendMessage() {
-    if (Front.messageBox.getText().length() < 1) {
-    } else if (Front.messageBox.getText().equals(".clear")) {
-      Front.chatBox.setText("Cleared all messages\n");
-      Front.messageBox.setText("");
-    } else {
-      ThreadUserEscrita.lerInput(Front.messageBox.getText());
-      Front.messageBox.setText("");
+    if (Front.messageBox.getText().length() >= 1) {
+      if (Front.messageBox.getText().equals(".clear")) {
+        Front.chatBox.setText("Cleared all messages\n");
+        Front.messageBox.setText("");
+      } else {
+        ThreadUserEscrita.lerInput(Front.messageBox.getText());
+        Front.messageBox.setText("");
+      }
     }
     Front.messageBox.requestFocusInWindow();
   }
