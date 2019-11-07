@@ -18,13 +18,12 @@ public class ThreadServidor extends Thread {
   }
 
   public static void enviarMensagem(String mensagem) {
-    listaUsuarios
-        .forEach(
-            destinatario -> {
-              if (destinatario.isAvaliable()) {
-                escreverMensagem(mensagem, destinatario);
-              }
-            });
+    listaUsuarios.forEach(
+        destinatario -> {
+          if (destinatario.isAvaliable()) {
+            escreverMensagem(mensagem, destinatario);
+          }
+        });
   }
 
   public static void removerUsuario(int id) {

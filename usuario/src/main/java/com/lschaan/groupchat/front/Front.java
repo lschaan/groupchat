@@ -1,5 +1,6 @@
 package com.lschaan.groupchat.front;
 
+import com.lschaan.groupchat.usuario.ThreadUserEscrita;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -8,7 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,12 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.lschaan.groupchat.usuario.ThreadUserEscrita;
-
 public class Front {
 
   public static JTextField usernameChooser;
-  public  static JFrame preFrame;
+  public static JFrame preFrame;
   public static JTextArea chatBox;
   private static String appName = "Chat";
   private static JFrame newFrame = new JFrame(appName);
@@ -32,43 +30,15 @@ public class Front {
 
   public static void start() {
     SwingUtilities.invokeLater(
-            () -> {
-              try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-              } catch (Exception e) {
-                e.printStackTrace();
-              }
-              Front front = new Front();
-              front.preDisplay();
-            });
-  }
-
-  private void preDisplay() {
-    newFrame.setVisible(false);
-    preFrame = new JFrame(appName);
-    usernameChooser = new JTextField(15);
-    JLabel chooseUsernameLabel = new JLabel("Digite seu nome:");
-
-    JButton enterServer = new JButton("Entrar");
-    enterServer.addActionListener(new ServerButtonListener());
-    JPanel prePanel = new JPanel(new GridBagLayout());
-
-    GridBagConstraints preRight = new GridBagConstraints();
-    preRight.insets = new Insets(0, 0, 0, 10);
-    preRight.anchor = GridBagConstraints.EAST;
-    GridBagConstraints preLeft = new GridBagConstraints();
-    preLeft.anchor = GridBagConstraints.WEST;
-    preLeft.insets = new Insets(0, 10, 0, 10);
-    preRight.fill = GridBagConstraints.HORIZONTAL;
-    preRight.gridwidth = GridBagConstraints.REMAINDER;
-
-    prePanel.add(chooseUsernameLabel, preLeft);
-    prePanel.add(usernameChooser, preRight);
-    preFrame.add(BorderLayout.CENTER, prePanel);
-    preFrame.add(BorderLayout.SOUTH, enterServer);
-    preFrame.setSize(400, 400);
-    preFrame.setVisible(true);
-    preFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        () -> {
+          try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          Front front = new Front();
+          front.preDisplay();
+        });
   }
 
   public static void display() {
@@ -137,5 +107,33 @@ public class Front {
       }
     }
     Front.messageBox.requestFocusInWindow();
+  }
+
+  private void preDisplay() {
+    newFrame.setVisible(false);
+    preFrame = new JFrame(appName);
+    usernameChooser = new JTextField(15);
+    JLabel chooseUsernameLabel = new JLabel("Digite seu nome:");
+
+    JButton enterServer = new JButton("Entrar");
+    enterServer.addActionListener(new ServerButtonListener());
+    JPanel prePanel = new JPanel(new GridBagLayout());
+
+    GridBagConstraints preRight = new GridBagConstraints();
+    preRight.insets = new Insets(0, 0, 0, 10);
+    preRight.anchor = GridBagConstraints.EAST;
+    GridBagConstraints preLeft = new GridBagConstraints();
+    preLeft.anchor = GridBagConstraints.WEST;
+    preLeft.insets = new Insets(0, 10, 0, 10);
+    preRight.fill = GridBagConstraints.HORIZONTAL;
+    preRight.gridwidth = GridBagConstraints.REMAINDER;
+
+    prePanel.add(chooseUsernameLabel, preLeft);
+    prePanel.add(usernameChooser, preRight);
+    preFrame.add(BorderLayout.CENTER, prePanel);
+    preFrame.add(BorderLayout.SOUTH, enterServer);
+    preFrame.setSize(400, 400);
+    preFrame.setVisible(true);
+    preFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 }

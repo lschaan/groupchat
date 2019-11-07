@@ -13,12 +13,6 @@ public class ThreadUserEscrita extends Thread {
     ThreadUserEscrita.paraServidor = new DataOutputStream(socketCliente.getOutputStream());
   }
 
-  public void run() {
-    while (true) {
-      if (socketCliente.isClosed()) break;
-    }
-  }
-
   public static void lerInput(String mensagem) {
     try {
       if (mensagem.equalsIgnoreCase("FIM")) {
@@ -27,6 +21,12 @@ public class ThreadUserEscrita extends Thread {
         paraServidor.writeBytes(mensagem + '\n');
       }
     } catch (IOException ignored) {
+    }
+  }
+
+  public void run() {
+    while (true) {
+      if (socketCliente.isClosed()) break;
     }
   }
 }
